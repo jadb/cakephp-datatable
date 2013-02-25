@@ -247,6 +247,9 @@ INIT_SCRIPT;
  */
 	protected function _parseSettings($model, $columns) {
 		foreach($columns as $field => $options) {
+			if (isset($options['useColumn']) && !$options['useColumn']) {
+				continue;
+			}
 			if ($options === null) {
 				$label = $field;
 				$options = array(
