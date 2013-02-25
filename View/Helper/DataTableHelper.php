@@ -123,7 +123,7 @@ class DataTableHelper extends HtmlHelper {
 			}
 		}
 		$jsVar = sprintf('var dataTableSettings = %s;', json_encode($this->_dtSettings));
-		$this->scriptBlock($jsVar, array('block' => 'dataTableSettings'));
+		$this->scriptBlock($jsVar, array('block' => $this->settings['scriptBlock']));
 		if ($this->settings['scriptBlock'] !== false) {
 			$initScript = <<< INIT_SCRIPT
 $(document).ready(function() {
