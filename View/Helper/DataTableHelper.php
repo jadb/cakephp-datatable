@@ -35,7 +35,9 @@ class DataTableHelper extends HtmlHelper {
 		'scriptBlock' => 'script',
 		'js' => array(
 			'bServerSide' => true,
+			'oLanguage' => array()
 		),
+		'i18nDomain' => 'dataTable'
 	);
 
 /**
@@ -74,6 +76,31 @@ class DataTableHelper extends HtmlHelper {
  */
 	public function __construct(View $View, $settings = array()) {
 		parent::__construct($View, $settings);
+
+		$this->settings['js']['oLanguage'] = array(
+			'sEmptyTable' => __d($this->settings['i18nDomain'], "No data available in table"),
+			'sInfo' => __d($this->settings['i18nDomain'], "Showing _START_ to _END_ of _TOTAL_ entries"),
+			'sInfoEmpty' => __d($this->settings['i18nDomain'], "Showing 0 to 0 of 0 entries"),
+			'sInfoFiltered' => __d($this->settings['i18nDomain'], "(filtered from _MAX_ total entries)"),
+			'sInfoPostFix' => __d($this->settings['i18nDomain'], " "),
+			'sInfoThousands' => __d($this->settings['i18nDomain'], ","),
+			'sLengthMenu' => __d($this->settings['i18nDomain'], "Show _MENU_ entries"),
+			'sLoadingRecords' => __d($this->settings['i18nDomain'], "Loading..."),
+			'sProcessing' => __d($this->settings['i18nDomain'], "Processing..."),
+			'sSearch' => __d($this->settings['i18nDomain'], "Search:"),
+			'sZeroRecords' => __d($this->settings['i18nDomain'], "No matching records found"),
+			'oPaginate' => array(
+				'sFirst' => __d($this->settings['i18nDomain'], "First"),
+				'sLast' => __d($this->settings['i18nDomain'], "Last"),
+				'sNext' => __d($this->settings['i18nDomain'], "Next"),
+				'sPrevious' => __d($this->settings['i18nDomain'], "Previous")
+			),
+			'oAria' => array(
+				'sSortAscending' => __d($this->settings['i18nDomain'], ": activate to sort column ascending"),
+				'sSortDescending' => __d($this->settings['i18nDomain'], ": activate to sort column descending")
+			)
+		);
+
 		$this->settings = Hash::merge($this->settings, $settings);
 		if (isset($this->_View->viewVars['dtColumns'])) {
 			$dtColumns = $this->_View->viewVars['dtColumns'];
@@ -213,7 +240,7 @@ INIT_SCRIPT;
  */
 	public function jsSettings($model, $settings = array(), $encode = false) {
 		$model = $this->_getModel($model);
-		$settings = array_merge($this->settings['js'], (array)$settings);
+		$settings = Hash::merge($this->settings['js'], (array)$settings);
 		if (!empty($settings['bServerSide'])) {
 			if (!isset($settings['sAjaxSource']) || $settings['sAjaxSource'] === true) {
 				$settings['sAjaxSource'] = $this->request->here();
