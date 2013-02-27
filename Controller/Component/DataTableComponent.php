@@ -286,7 +286,7 @@ class DataTableComponent extends PaginatorComponent {
 	protected function _paginate(&$settings) {
 		if (isset($this->_params['iDisplayLength']) && isset($this->_params['iDisplayStart'])) {
 			$limit = $this->_params['iDisplayLength'];
-			if ($limit > $settings['maxLimit']) {
+			if ($limit > $settings['maxLimit'] || $limit < 0) {
 				$limit = $settings['maxLimit'];
 			}
 			$settings['limit'] = $limit;
